@@ -4723,6 +4723,11 @@
   <!-- here, so be sure to include any of the default values that you wish  -->
   <!-- to use within your application.                                       -->
 
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404error.jsp</location>
+	</error-page>
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>

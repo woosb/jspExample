@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 public class MemberDAO {
@@ -76,5 +78,79 @@ public class MemberDAO {
 		}
 		//db 에러
 		return 0;
+	}
+	
+	public MemberDTO getMemberWithId(String userId) {
+		MemberDTO dto = null;
+		try {
+			String sql = "select * from member_ex where id=?";
+			con = DriverManager.getConnection(url, user, pwd);
+			ps = con.prepareStatement(sql);
+			ps.setString(1, userId);
+			rs = ps.executeQuery();
+			if(rs.next()){
+				dto = new MemberDTO();
+				String id = rs.getString("id");
+				String pwd = rs.getString("pwd");
+				String name = rs.getString("name");
+				String addr = rs.getString("addr");
+				String tel = rs.getString("tel");
+				dto.setId(id);
+				dto.setPwd(pwd);
+				dto.setName(name);
+				dto.setAddr(addr);
+				dto.setTel(tel);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+	public int register(MemberDTO dto) {
+		int result = 0;
+		try {
+			String sql = "insert into member_ex values(?, ?, ?, ?, ?)";
+			con = DriverManager.getConnection(url, user, pwd);
+			ps = con.prepareStatement(sql);
+			ps.setString(1, dto.getId());
+			ps.setString(2, dto.getPwd());
+			ps.setString(3, dto.getName());
+			ps.setString(4, dto.getAddr());
+			ps.setString(5, dto.getTel());
+			result = ps.executeUpdate();
+		} catch(SQLIntegrityConstraintViolationException e) {
+			result = -1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	public void modify(MemberDTO dto) {
+		try {
+			String sql = "update member_ex  set pwd= ?, name=?, addr=?, tel=? where id=?";
+			con = DriverManager.getConnection(url, user, pwd);
+			ps = con.prepareStatement(sql);
+			ps.setString(1, dto.getPwd());
+			ps.setString(2, dto.getName());
+			ps.setString(3, dto.getAddr());
+			ps.setString(4, dto.getTel());
+			ps.setString(5, dto.getId());
+			ps.execute();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(MemberDTO dto) {
+		try {
+			System.out.print(dto.getId());
+			String sql = "delete from member_ex where id=?";
+			con = DriverManager.getConnection(url, user, pwd);
+			ps = con.prepareStatement(sql);
+			ps.setString(1, dto.getId());
+			ps.execute();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

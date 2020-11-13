@@ -14,6 +14,7 @@
 	<input type="text" placeholder="비밀번호" name="pwd">
 	<input type="submit" value="로그인" width=30px height="50px">
 </form>
+<a href="register.jsp">회원가입</a>
 <%@ include file="../includes/footer.jsp" %>
 </body>
 </html>

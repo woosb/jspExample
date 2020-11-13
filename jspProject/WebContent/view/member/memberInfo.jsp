@@ -27,6 +27,7 @@
 			String name = dto.getName();
 			String addr = dto.getAddr();
 			String tel = dto.getTel();
+			String id = dto.getId();
 	%>
 	<script>
 	$( document ).ready(function(){
@@ -34,9 +35,18 @@
 		var memberList = document.getElementById("memberList");
 		var tr = document.createElement("tr");
 		for(i = 0; i < 3; ++i){
-			td = document.createElement("td");
-			td.innerHTML = list[i];
-			tr.appendChild(td);
+			if(i == 0){
+				td = document.createElement("td");
+				a = document.createElement("a");
+				a.href = "memberDetail.jsp?id="+"<%=id%>";  
+				a.innerHTML = list[i];
+				td.appendChild(a);
+				tr.appendChild(td);
+			}else{
+				td = document.createElement("td");
+				td.innerHTML = list[i];
+				tr.appendChild(td);	
+			}
 		}
 		memberList.appendChild(tr);
 	});

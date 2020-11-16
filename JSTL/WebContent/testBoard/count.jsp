@@ -13,6 +13,6 @@
 <jsp:useBean id="dao" class="testBoard.BoardDAO"/>
 ${dao.count(param.num) }
 <c:out value="${num }"/>
-<c:redirect url="list.jsp"/>
+<c:redirect url="list.jsp?start=${param.start }"/>
 </body>
 </html>

@@ -21,15 +21,18 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
-	public ArrayList<BoardDTO> list(int start, int end){
+	public ArrayList<BoardDTO> list(int start){
+		if(start == 0) {
+			start = 1;
+		}
 		ArrayList<BoardDTO> list = new ArrayList<BoardDTO>();
 //		String sql = "select * from paging order by num desc";
 		String sql = "select b.* from (select rownum rn, a.* from (select * from paging order by num desc)a )b where rn between ? and ?";
 		try {
 			con = DriverManager.getConnection(url, user, pwd);
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, start);
-			ps.setInt(2, end);
+			ps.setInt(1, (start-1)*3+1);
+			ps.setInt(2, (start-1)*3+1+2);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				BoardDTO dto = new BoardDTO();
@@ -76,6 +79,7 @@ public class BoardDAO {
 	}
 	
 	public int gettotalPage() {
+		int amount = 3;
 		String sql = "select count(*) from paging";
 		int totalPage = 0;
 		try {
@@ -88,6 +92,12 @@ public class BoardDAO {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return totalPage;
+		
+		if(totalPage %amount == 0) {
+			return totalPage/amount;
+		}else {
+			return totalPage/amount+1;
+		}
+		
 	}
 }

@@ -11,7 +11,7 @@
 </head>
 <body>
 	<jsp:useBean id="dao" class="testBoard.BoardDAO"/>
-	<c:set var="listDto" value="${ dao.list(1, 3)}"/>
+	<c:set var="listDto" value="${ dao.list(param.start)}"/>
 	
 	<c:set var="totalPage" value="${dao.gettotalPage()}"/>
 	
@@ -28,7 +28,7 @@
 					<tr>
 						<td>${dto.num }</td>
 						<td>
-							<a href="count.jsp?num=${dto.num }">
+							<a href="count.jsp?num=${dto.num }&start=${param.start}">
 								${dto.title }
 							</a>
 						</td>
@@ -75,7 +75,7 @@
 						<button type="button" disabled> 다음</button>
 					</c:otherwise>
 				</c:choose>
-				${totalPage }
+					${start }/${totalPage }
 				<button type="button" onclick="location.href='regForm.jsp'">
 					등록
 				</button>
